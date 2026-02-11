@@ -122,7 +122,7 @@ jobs:
         run: |
           version="${GITHUB_REF#refs/tags/}"
           
-          mkdir release
+          mkdir -p release
           
           # Linux MM plugin
           tar -czf release/RayTrace-MM-${version}-linux.tar.gz \
@@ -132,12 +132,15 @@ jobs:
           tar -czf release/RayTrace-MM-${version}-windows.tar.gz \
             -C artifacts/windows .
           
-          # CS# package (platform independent)
-          mkdir cs
-          cp -r artifacts/linux/addons/counterstrikesharp cs/
+          # CS# package
+          mkdir -p cs/counterstrikesharp/plugins
+          mkdir -p cs/counterstrikesharp/shared
+          
+          cp -r artifacts/linux/counterstrikesharp/plugins/RayTraceImpl cs/counterstrikesharp/plugins/
+          cp -r artifacts/linux/counterstrikesharp/shared/RayTraceApi cs/counterstrikesharp/shared/
           
           tar -czf release/RayTrace-CSSharp-${version}.tar.gz \
-            -C cs .
+            -C cs . 
 
       - name: Upload release archives
         uses: svenstaro/upload-release-action@v2
