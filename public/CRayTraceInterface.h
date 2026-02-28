@@ -1,10 +1,9 @@
 #pragma once
 #include "vector.h"
 #include "gametrace.h"
+#include "entityinstance.h"
 
 #define RAYTRACE_INTERFACE_VERSION "CRayTraceInterface001"
-
-class CBaseEntity;
 
 enum class InteractionLayers : uint64_t
 {
@@ -184,7 +183,7 @@ public:
     virtual bool TraceShape(
         const Vector* origin,
         const QAngle* viewangles,
-        CBaseEntity* ignoreEntity,
+        CEntityInstance* ignoreEntity,
         const TraceOptions* opts,
         TraceResult* outResult
     ) = 0;
@@ -192,7 +191,7 @@ public:
     virtual bool TraceEndShape(
         const Vector* origin,
         const Vector* endOrigin,
-        CBaseEntity* ignoreEntity,
+        CEntityInstance* ignoreEntity,
         const TraceOptions* opts,
         TraceResult* outResult
     ) = 0;
@@ -202,7 +201,7 @@ public:
         const Vector* vecEnd,
         const Vector* hullMins,
         const Vector* hullMaxs,
-        CBaseEntity* ignoreEntity,
+        CEntityInstance* ignoreEntity,
         const TraceOptions* opts,
         TraceResult* outResult
     ) = 0;

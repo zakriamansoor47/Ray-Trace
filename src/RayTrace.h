@@ -32,13 +32,13 @@ namespace RayTracePlugin::RayTrace
     std::optional<TraceResult> TraceShape(
         const Vector& origin,
         const QAngle& viewangles,
-        CBaseEntity* ignoreEntity = nullptr,
+        CEntityInstance* ignoreEntity = nullptr,
         const TraceOptions* opts = nullptr);
 
     std::optional<TraceResult> TraceEndShape(
         const Vector& origin,
         const Vector& endOrigin,
-        CBaseEntity* ignoreEntity = nullptr,
+        CEntityInstance* ignoreEntity = nullptr,
         const TraceOptions* opts = nullptr);
 
     std::optional<TraceResult> TraceHullShape(
@@ -46,7 +46,7 @@ namespace RayTracePlugin::RayTrace
         const Vector& vecEnd,
         const Vector& hullMins,
         const Vector& hullMaxs,
-        CBaseEntity* ignoreEntity = nullptr,
+        CEntityInstance* ignoreEntity = nullptr,
         const TraceOptions* opts = nullptr);
 
     std::optional<TraceResult> TraceShapeEx(
@@ -61,7 +61,7 @@ namespace RayTracePlugin::RayTrace
         bool TraceShape(
             const Vector* origin,
             const QAngle* viewangles,
-            CBaseEntity* ignoreEntity,
+            CEntityInstance* ignoreEntity,
             const TraceOptions* opts,
             TraceResult* outResult) override
         {
@@ -76,7 +76,7 @@ namespace RayTracePlugin::RayTrace
         bool TraceEndShape(
             const Vector* origin,
             const Vector* endOrigin,
-            CBaseEntity* ignoreEntity,
+            CEntityInstance* ignoreEntity,
             const TraceOptions* opts,
             TraceResult* outResult) override
         {
@@ -93,7 +93,7 @@ namespace RayTracePlugin::RayTrace
             const Vector* vecEnd,
             const Vector* hullMins,
             const Vector* hullMaxs,
-            CBaseEntity* ignoreEntity,
+            CEntityInstance* ignoreEntity,
             const TraceOptions* opts,
             TraceResult* outResult) override
         {

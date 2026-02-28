@@ -109,7 +109,7 @@ namespace RayTracePlugin::RayTrace
     std::optional<TraceResult> TraceShape(
         const Vector& origin,
         const QAngle& viewangles,
-        CBaseEntity* ignoreEntity,
+        CEntityInstance* ignoreEntity,
         const TraceOptions* opts)
     {
         Vector forward;
@@ -120,7 +120,7 @@ namespace RayTracePlugin::RayTrace
             origin.z + forward.z * 8192.f
         };
 
-        CTraceFilterEx filter = ignoreEntity ? CTraceFilterEx(ignoreEntity) : CTraceFilterEx();
+        CTraceFilterEx filter = ignoreEntity ? CTraceFilterEx(static_cast<CBaseEntity*>(ignoreEntity)) : CTraceFilterEx();
 
         filter.m_nInteractsAs = 0;
         filter.m_nInteractsWith = static_cast<uint64_t>(MASK_SHOT_PHYSICS);
@@ -153,10 +153,10 @@ namespace RayTracePlugin::RayTrace
     std::optional<TraceResult> TraceEndShape(
         const Vector& origin,
         const Vector& endOrigin,
-        CBaseEntity* ignoreEntity,
+        CEntityInstance* ignoreEntity,
         const TraceOptions* opts)
     {
-        CTraceFilterEx filter = ignoreEntity ? CTraceFilterEx(ignoreEntity) : CTraceFilterEx();
+        CTraceFilterEx filter = ignoreEntity ? CTraceFilterEx(static_cast<CBaseEntity*>(ignoreEntity)) : CTraceFilterEx();
 
         filter.m_nInteractsAs = 0;
         filter.m_nInteractsWith = static_cast<uint64_t>(MASK_SHOT_PHYSICS);
@@ -187,8 +187,8 @@ namespace RayTracePlugin::RayTrace
     }
 
     std::optional<TraceResult> TraceHullShape(const Vector &vecStart, const Vector &vecEnd, const Vector &hullMins,
-        const Vector &hullMaxs, CBaseEntity *ignoreEntity, const TraceOptions *opts) {
-        CTraceFilterEx filter = ignoreEntity ? CTraceFilterEx(ignoreEntity) : CTraceFilterEx();
+        const Vector &hullMaxs, CEntityInstance *ignoreEntity, const TraceOptions *opts) {
+        CTraceFilterEx filter = ignoreEntity ? CTraceFilterEx(static_cast<CBaseEntity*>(ignoreEntity)) : CTraceFilterEx();
 
         filter.m_nInteractsAs = 0;
         filter.m_nInteractsWith = static_cast<uint64_t>(MASK_SHOT_PHYSICS);
