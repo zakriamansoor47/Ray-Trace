@@ -6,7 +6,7 @@
 #include <optional>
 #include "vector.h"
 #include "schema/CBaseEntity.h"
-#include "CRayTraceInterface.h"
+#include "craytraceinterface.h"
 
 namespace RayTracePlugin::RayTrace
 {

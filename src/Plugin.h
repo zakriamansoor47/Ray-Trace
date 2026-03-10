@@ -2,7 +2,7 @@
 #define _INCLUDE_METAMOD_SOURCE_STUB_PLUGIN_H_
 
 #include <igameevents.h>
-#include <ISmmPlugin.h>
+#include <ISmmplugin.h>
 #include "entitysystem.h"
 
 namespace RayTracePlugin
