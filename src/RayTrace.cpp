@@ -2,8 +2,8 @@
 // Created by Michal Přikryl on 30.08.2025.
 // Copyright (c) 2025 slynxcz. All rights reserved.
 //
-#include "RayTrace.h"
-#include <Shared.h>
+#include "raytrace.h"
+#include <shared.h>
 #include "schema/CBaseModelEntity.h"
 #include "vectorextends.h"
 #include "dynlibutils/memaddr.h"

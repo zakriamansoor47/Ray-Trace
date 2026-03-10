@@ -4,7 +4,7 @@
 //
 #include "CTimer.h"
 
-#include <Shared.h>
+#include <shared.h>
 
 namespace
 RayTracePlugin

@@ -2,9 +2,9 @@
 // Created by Michal Přikryl on 10.07.2025.
 // Copyright (c) 2025 slynxcz. All rights reserved.
 //
-#include "Listeners.h"
-#include <RayTrace.h>
-#include <Shared.h>
+#include "listeners.h"
+#include <raytrace.h>
+#include <shared.h>
 #include <tasks.h>
 #include <dynlibutils/module.h>
 

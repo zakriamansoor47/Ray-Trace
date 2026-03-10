@@ -7,7 +7,7 @@
 #include <list>
 #include <memory>
 #include <platform.h>
-#include <Shared.h>
+#include <shared.h>
 
 #include "tasks.h"
 

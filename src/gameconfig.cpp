@@ -4,7 +4,7 @@
 //
 #include "gameconfig.h"
 #include <fstream>
-#include <Plugin.h>
+#include <plugin.h>
 
 namespace RayTracePlugin
 {

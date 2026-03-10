@@ -19,7 +19,7 @@
 
 #pragma once
 #include <cstdint>
-#include "Plugin.h"
+#include "plugin.h"
 
 class CGameEntitySystem;
 

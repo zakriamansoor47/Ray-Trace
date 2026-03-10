@@ -94,6 +94,8 @@ public:
 
 ### C++ (Metamod plugin)
 
+Include header from `public/craytraceinterface.h`
+
 ``` cpp
 CRayTraceInterface* g_pRayTrace = nullptr;
 bool g_bRayTraceLoaded = false;

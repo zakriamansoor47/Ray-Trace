@@ -6,7 +6,7 @@
 
 #include <eiface.h>
 #include <string>
-#include "Shared.h"
+#include "shared.h"
 
 namespace RayTracePlugin::Paths {
     static std::string gameDirectory;

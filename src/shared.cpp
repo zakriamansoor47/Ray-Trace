@@ -2,7 +2,7 @@
 // Created by Michal Přikryl on 20.09.2025.
 // Copyright (c) 2025 slynxcz. All rights reserved.
 //
-#include "Shared.h"
+#include "shared.h"
 #include <icvar.h>
 #include <iserver.h>
 #include <schemasystem.h>

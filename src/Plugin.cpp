@@ -1,6 +1,6 @@
-#include "Plugin.h"
+#include "plugin.h"
 #include "path.h"
-#include "Shared.h"
+#include "shared.h"
 #include "dynlibutils/module.h"
 #include <entitysystem.h>
 #include "igameevents.h"
@@ -13,10 +13,10 @@
 #include <fstream>
 #include <gameconfig.h>
 #include <regex>
-#include <listeners/Listeners.h>
-#include "CRayTraceInterface.h"
+#include <listeners/listeners.h>
+#include "craytraceinterface.h"
 #include "log.h"
-#include "RayTrace.h"
+#include "raytrace.h"
 #include "tasks.h"
 
 #define VERSION_STRING SEMVER " @ " GITHUB_SHA

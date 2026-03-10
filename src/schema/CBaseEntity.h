@@ -11,7 +11,7 @@
 #include "globaltypes.h"
 #include "virtual.h"
 #include "dynlibutils/module.h"
-#include "Shared.h"
+#include "shared.h"
 #include "ehandle.h"
 
 using namespace RayTracePlugin;
