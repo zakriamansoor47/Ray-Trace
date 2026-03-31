@@ -133,20 +133,27 @@ namespace RayTraceAPI
 	}
 
 	[StructLayout(LayoutKind.Explicit, Size = 48)]
-	public unsafe struct RnCollisionAttr_t
+	public struct RnCollisionAttr_t
 	{
 		[FieldOffset(0)] public ulong InteractsAs;
 		[FieldOffset(8)] public ulong InteractsWith;
 		[FieldOffset(16)] public ulong InteractsExclude;
+
 		[FieldOffset(24)] public uint EntityId;
 		[FieldOffset(28)] public uint OwnerId;
+
 		[FieldOffset(32)] public ushort HierarchyId;
-		[FieldOffset(36)] public CollisionGroup CollisionGroup;
-		[FieldOffset(40)] public CollisionFunctionMask_t CollisionFunctionMask;
+		[FieldOffset(34)] public ushort DetailLayerMask;
+
+		[FieldOffset(36)] public byte DetailLayerMaskType;
+		[FieldOffset(37)] public byte TargetDetailLayer;
+		[FieldOffset(38)] public byte CollisionGroup;
+		[FieldOffset(39)] public byte CollisionFunctionMask;
+
+		[FieldOffset(40)] private long _pad;
 	}
 
-	public enum RayType_t : byte
-	{
+	public enum RayType_t : int	{
 		RAY_TYPE_LINE = 0,
 		RAY_TYPE_SPHERE,
 		RAY_TYPE_HULL,
@@ -314,61 +321,59 @@ namespace RayTraceAPI
 	[StructLayout(LayoutKind.Explicit, Size = 208)]
 	public unsafe struct TraceResult
 	{
-		// Start position
-		[FieldOffset(0)] public float StartPosX;
-		[FieldOffset(4)] public float StartPosY;
-		[FieldOffset(8)] public float StartPosZ;
+	    [FieldOffset(0)] public float StartPosX;
+	    [FieldOffset(4)] public float StartPosY;
+	    [FieldOffset(8)] public float StartPosZ;
 
-		// End position
-		[FieldOffset(12)] public float EndPosX;
-		[FieldOffset(16)] public float EndPosY;
-		[FieldOffset(20)] public float EndPosZ;
+	    [FieldOffset(12)] public float EndPosX;
+	    [FieldOffset(16)] public float EndPosY;
+	    [FieldOffset(20)] public float EndPosZ;
 
-		// Hit point
-		[FieldOffset(24)] public float HitPointX;
-		[FieldOffset(28)] public float HitPointY;
-		[FieldOffset(32)] public float HitPointZ;
+	    [FieldOffset(24)] public float HitPointX;
+	    [FieldOffset(28)] public float HitPointY;
+	    [FieldOffset(32)] public float HitPointZ;
 
-		// Hit normal
-		[FieldOffset(36)] public float NormalX;
-		[FieldOffset(40)] public float NormalY;
-		[FieldOffset(44)] public float NormalZ;
+	    [FieldOffset(36)] public float NormalX;
+	    [FieldOffset(40)] public float NormalY;
+	    [FieldOffset(44)] public float NormalZ;
 
-		// Fraction & hit offset
-		[FieldOffset(48)] public float Fraction;
-		[FieldOffset(52)] public float HitOffset;
+	    [FieldOffset(48)] public float Fraction;
+	    [FieldOffset(52)] public float HitOffset;
 
-		// Hit triangle / hitbox
-		[FieldOffset(56)] public int TriangleIndex;
-		[FieldOffset(60)] public int HitboxBoneIndex;
+	    [FieldOffset(56)] public int TriangleIndex;
+	    [FieldOffset(60)] public int HitboxBoneIndex;
 
-		// Flags/metadata are 32-bit values in native trace result
-		[FieldOffset(64)] public InteractionLayers Contents;
-		[FieldOffset(68)] public RayType_t RayType;
-		[FieldOffset(72)] public int AllSolid;
-		[FieldOffset(76)] public int ExactHitPoint;
+	    [FieldOffset(64)] public int Contents;
+	    [FieldOffset(68)] public int RayType;
 
-		// Raw pointers (8 bytes each on x64)
-		[FieldOffset(80)] public nint HitEntityHandle;
-		[FieldOffset(88)] public nint HitboxHandle;
-		[FieldOffset(96)] public nint SurfacePropsHandle;
-		[FieldOffset(104)] public nint BodyHandle;
-		[FieldOffset(112)] public nint ShapeHandle;
-		[FieldOffset(128)] public CTransform BodyTransform;
-		[FieldOffset(160)] public RnCollisionAttr_t ShapeAttributes;
+	    [FieldOffset(72)] public byte AllSolid;
+	    [FieldOffset(73)] public byte ExactHitPoint;
 
-		// Helper properties for vectors
-		public Vector3 StartPos => new(StartPosX, StartPosY, StartPosZ);
-		public Vector3 EndPos => new(EndPosX, EndPosY, EndPosZ);
-		public Vector3 HitPoint => new(HitPointX, HitPointY, HitPointZ);
-		public Vector3 Normal => new(NormalX, NormalY, NormalZ);
+	    [FieldOffset(74)] private ushort _padFlags;
 
-		public bool DidHit => Fraction < 1.0f;
-		public bool IsAllSolid => AllSolid != 0;
-		public bool HasExactHit => ExactHitPoint != 0;
-		public CPhysSurfacePropertiesTrace SurfaceProps => SurfacePropsHandle == 0 ? default : Marshal.PtrToStructure<CPhysSurfacePropertiesTrace>(SurfacePropsHandle);
-		public CHitBox Hitbox  => HitboxHandle == 0 ? default : Marshal.PtrToStructure<CHitBox>(HitboxHandle);
-		public CEntityInstance? HitEntity => HitEntityHandle == 0 ? null : new CEntityInstance(HitEntityHandle);
+	    [FieldOffset(80)] public nint HitEntityHandle;
+	    [FieldOffset(88)] public nint HitboxHandle;
+	    [FieldOffset(96)] public nint SurfacePropsHandle;
+	    [FieldOffset(104)] public nint BodyHandle;
+	    [FieldOffset(112)] public nint ShapeHandle;
+
+	    [FieldOffset(120)] private long _padAlign;
+
+	    [FieldOffset(128)] public CTransform BodyTransform;
+	    [FieldOffset(160)] public RnCollisionAttr_t ShapeAttributes;
+
+	    public Vector3 StartPos => new(StartPosX, StartPosY, StartPosZ);
+	    public Vector3 EndPos => new(EndPosX, EndPosY, EndPosZ);
+	    public Vector3 HitPoint => new(HitPointX, HitPointY, HitPointZ);
+	    public Vector3 Normal => new(NormalX, NormalY, NormalZ);
+
+	    public bool DidHit => Fraction < 1.0f;
+	    public bool IsAllSolid => AllSolid != 0;
+	    public bool HasExactHit => ExactHitPoint != 0;
+
+	    public CPhysSurfacePropertiesTrace SurfaceProps => SurfacePropsHandle == 0 ? default : Marshal.PtrToStructure<CPhysSurfacePropertiesTrace>(SurfacePropsHandle);
+	    public CHitBox Hitbox => HitboxHandle == 0 ? default : Marshal.PtrToStructure<CHitBox>(HitboxHandle);
+	    public CEntityInstance? HitEntity => HitEntityHandle == 0 ? null : new CEntityInstance(HitEntityHandle);
 	}
 #endregion
 
