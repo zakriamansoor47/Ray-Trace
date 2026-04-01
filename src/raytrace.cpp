@@ -25,17 +25,16 @@ namespace RayTracePlugin::RayTrace
 
     bool Initialize()
     {
-        void* pCNavPhysicsInterfaceVTable =
-            DynLibUtils::CModule(shared::g_pServer).GetVirtualTableByName("CNavPhysicsInterface");
+        DynLibUtils::CModule libserver = DynLibUtils::CModule(shared::g_pServer);
+        void** pVTable = libserver.GetVirtualTableByName("CNavPhysicsInterface").RCast<void**>();
 
-        if (!pCNavPhysicsInterfaceVTable)
+        if (!pVTable)
         {
-            FP_ERROR("Failed to find CNavPhysicsInterface vtable!");
+            FP_ERROR("Failed to find CNavPhysicsInterface VTable!");
             return false;
         }
 
-        auto table = static_cast<void**>(pCNavPhysicsInterfaceVTable);
-        s_TraceShape = reinterpret_cast<TraceShapeFn>(table[shared::g_pGameConfig->GetOffset("CNavPhysicsInterface_TraceShape")]);
+        s_TraceShape = DynLibUtils::CMemory(pVTable[shared::g_pGameConfig->GetOffset("CNavPhysicsInterface_TraceShape")]).RCast<TraceShapeFn>();
 
         return true;
     }
@@ -66,7 +65,7 @@ namespace RayTracePlugin::RayTrace
             return std::nullopt;
         }
 
-        CGameTrace tr{};
+        thread_local CGameTrace tr{};
         Vector startCopy = start;
         Vector endCopy = end;
         s_TraceShape(nullptr, rayInc, startCopy, endCopy,
@@ -91,17 +90,17 @@ namespace RayTracePlugin::RayTrace
         r.TriangleIndex = tr.m_nTriangle;
         r.HitboxBoneIndex = tr.m_nHitboxBoneIndex;
         r.Contents = tr.m_nContents;
-        r.RayType = static_cast<int>(tr.m_eRayType);
+        r.RayType = (int)tr.m_eRayType;
         r.AllSolid = tr.m_bStartInSolid;
         r.ExactHitPoint = tr.m_bExactHitPoint;
 
-        r.HitEntity = tr.m_pEnt;
-        r.Hitbox = const_cast<CHitBox *>(tr.m_pHitbox);
-        r.SurfaceProps = const_cast<CPhysSurfaceProperties *>(tr.m_pSurfaceProperties);
-        r.BodyHandle = tr.m_hBody;
-        r.ShapeHandle = tr.m_hShape;
-        r.BodyTransform = tr.m_BodyTransform;
-        r.ShapeAttributes = tr.m_ShapeAttributes;
+        r.HitEntity = (CEntityInstance*)tr.m_pEnt;
+        r.Hitbox = (CHitBox*)tr.m_pHitbox;
+        r.SurfaceProps = (CPhysSurfaceProperties*)tr.m_pSurfaceProperties;
+        r.BodyHandle = (IPhysicsBody*)tr.m_hBody;
+        r.ShapeHandle = (IPhysicsShape*)tr.m_hShape;
+        r.BodyTransform = &tr.m_BodyTransform;
+        r.ShapeAttributes = &tr.m_ShapeAttributes;
 
         return r;
     }

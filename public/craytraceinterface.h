@@ -172,8 +172,8 @@ struct TraceResult
     IPhysicsBody *BodyHandle;
     IPhysicsShape *ShapeHandle;
 
-    CTransform BodyTransform;
-    RnCollisionAttr_t ShapeAttributes;
+    CTransform *BodyTransform;
+    RnCollisionAttr_t *ShapeAttributes;
 };
 
 class CRayTraceInterface
