@@ -170,7 +170,15 @@ namespace RayTraceAPI
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct QAngle
+    public struct VectorNative
+    {
+        public float X;
+        public float Y;
+        public float Z;
+    }
+
+    [StructLayout(LayoutKind.Sequential)]
+    public struct QAngleNative
     {
         public float X;
         public float Y;
@@ -180,30 +188,9 @@ namespace RayTraceAPI
 
     public interface CRayTraceInterface
     {
-        TraceResult TraceShape(
-            in Vector3 start,
-            in QAngle angles,
-            CEntityInstance ignoreEntity,
-            in TraceOptions options);
-
-        TraceResult TraceEndShape(
-            in Vector3 start,
-            in Vector3 end,
-            CEntityInstance ignoreEntity,
-            in TraceOptions options);
-
-        TraceResult TraceHullShape(
-            in Vector3 start,
-            in Vector3 end,
-            in Vector3 mins,
-            in Vector3 maxs,
-            CEntityInstance ignoreEntity,
-            in TraceOptions options);
-
-        TraceResult TraceShapeEx(
-            in Vector3 start,
-            in Vector3 end,
-            nint traceFilter,
-            nint ray);
+        public TraceResult TraceShape(Vector start, QAngle angles, CEntityInstance ignore, TraceOptions options);
+        public TraceResult TraceEndShape(Vector start, Vector end, CEntityInstance ignore, TraceOptions options);
+        public TraceResult TraceHullShape(Vector start, Vector end, Vector mins, Vector maxs, CEntityInstance ignore, TraceOptions options);
+        public TraceResult TraceShapeEx(Vector start, Vector end, nint filter, nint ray);
     }
 }
