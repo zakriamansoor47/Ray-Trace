@@ -43,7 +43,7 @@ namespace RayTracePlugin::RayTrace
         beam->DispatchSpawn();
     }
 
-    bool CRayTrace::TraceShape(const Vector& vecStart, const QAngle& angAngles, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult)
+    bool CRayTrace::TraceShape(const Vector* pVecStart, const QAngle* pAngAngles, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult)
     {
         CTraceFilterEx filter = pIgnoreEntity ? CTraceFilterEx(static_cast<CBaseEntity*>(pIgnoreEntity)) : CTraceFilterEx();
 
@@ -61,26 +61,26 @@ namespace RayTracePlugin::RayTrace
         }
 
         Vector forward;
-        AngleVectors(angAngles, &forward);
+        AngleVectors(pAngAngles ? *pAngAngles : VectorExtends::RotationZero, &forward);
         Vector vecEnd{
-            vecStart.x + forward.x * 8192.f,
-            vecStart.y + forward.y * 8192.f,
-            vecStart.z + forward.z * 8192.f
+            pVecStart ? pVecStart->x : 0 + forward.x * 8192.f,
+            pVecStart ? pVecStart->y : 0 + forward.y * 8192.f,
+            pVecStart ? pVecStart->z : 0 + forward.z * 8192.f
         };
 
         Ray_t ray;
-        auto res = TraceShapeEx(vecStart, vecEnd, &filter, &ray, pTraceResult);
+        auto res = TraceShapeEx(pVecStart, &vecEnd, &filter, &ray, pTraceResult);
 
         if (pTraceOptions && pTraceOptions->DrawBeam)
         {
             Color col = res ? colors::Red().ToValveColor() : colors::Green().ToValveColor();
-            DrawBeam(vecStart, (res && pTraceResult) ? pTraceResult->EndPos : vecEnd, col);
+            DrawBeam(pVecStart ? *pVecStart : VectorExtends::VectorZero, (res && pTraceResult) ? pTraceResult->EndPos : vecEnd, col);
         }
 
         return res;
     }
 
-    bool CRayTrace::TraceEndShape(const Vector& vecStart, const Vector& vecEnd, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult)
+    bool CRayTrace::TraceEndShape(const Vector* pVecStart, const Vector* pVecEnd, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult)
     {
         CTraceFilterEx filter = pIgnoreEntity ? CTraceFilterEx(static_cast<CBaseEntity*>(pIgnoreEntity)) : CTraceFilterEx();
 
@@ -98,19 +98,19 @@ namespace RayTracePlugin::RayTrace
         }
 
         Ray_t ray;
-        auto res = TraceShapeEx(vecStart, vecEnd, &filter, &ray, pTraceResult);
+        auto res = TraceShapeEx(pVecStart, pVecEnd, &filter, &ray, pTraceResult);
 
         if (pTraceOptions && pTraceOptions->DrawBeam)
         {
             Color col = res ? colors::Red().ToValveColor() : colors::Green().ToValveColor();
-            DrawBeam(vecStart, (res && pTraceResult) ? pTraceResult->EndPos : vecEnd, col);
+            DrawBeam(pVecEnd ? *pVecEnd : VectorExtends::VectorZero, (res && pTraceResult) ? pTraceResult->EndPos : (pVecEnd ? *pVecEnd : VectorExtends::VectorZero), col);
         }
 
         return res;
     }
 
-    bool CRayTrace::TraceHullShape(const Vector& vecStart, const Vector& vecEnd, const Vector& vecMins,
-                                          const Vector& vecMaxs, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult)
+    bool CRayTrace::TraceHullShape(const Vector* pVecStart, const Vector* pVecEnd, const Vector* pVecMins,
+                                          const Vector* pVecMaxs, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult)
     {
         CTraceFilterEx filter = pIgnoreEntity ? CTraceFilterEx(static_cast<CBaseEntity*>(pIgnoreEntity)) : CTraceFilterEx();
 
@@ -128,20 +128,20 @@ namespace RayTracePlugin::RayTrace
         }
 
         Ray_t ray;
-        ray.Init(vecMins, vecMaxs);
+        ray.Init(pVecMins ? *pVecMins : VectorExtends::VectorZero, pVecMaxs ? *pVecMaxs : VectorExtends::VectorZero);
 
-        auto res = TraceShapeEx(vecStart, vecEnd, &filter, &ray, pTraceResult);
+        auto res = TraceShapeEx(pVecStart, pVecEnd, &filter, &ray, pTraceResult);
 
         if (pTraceOptions && pTraceOptions->DrawBeam)
         {
             Color col = res ? colors::Red().ToValveColor() : colors::Green().ToValveColor();
-            DrawBeam(vecStart, (res && pTraceResult) ? pTraceResult->EndPos : vecEnd, col);
+            DrawBeam(pVecEnd ? *pVecEnd : VectorExtends::VectorZero, (res && pTraceResult) ? pTraceResult->EndPos : (pVecEnd ? *pVecEnd : VectorExtends::VectorZero), col);
         }
 
         return res;
     }
 
-    bool CRayTrace::TraceShapeEx(const Vector& vecStart, const Vector& vecEnd, CTraceFilter* pTraceFilter, Ray_t* pRay, TraceResult* pTraceResult)
+    bool CRayTrace::TraceShapeEx(const Vector* pVecStart, const Vector* pVecEnd, CTraceFilter* pTraceFilter, Ray_t* pRay, TraceResult* pTraceResult)
     {
         if (!m_pCNavPhysicsInterface_TraceShape)
         {
@@ -149,8 +149,8 @@ namespace RayTracePlugin::RayTrace
             return false;
         }
 
-        Vector vecStartCopy = vecStart;
-        Vector vecEndCopy = vecEnd;
+        Vector vecStartCopy = pVecStart ? *pVecStart : VectorExtends::VectorZero;
+        Vector vecEndCopy = pVecEnd ? *pVecEnd : VectorExtends::VectorZero;
         CGameTrace trace;
 
         bool bResult = m_pCNavPhysicsInterface_TraceShape.RCast<

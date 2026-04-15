@@ -171,28 +171,28 @@ class CRayTraceInterface
 public:
     virtual ~CRayTraceInterface() = default;
 
-    virtual bool TraceShape(const Vector& vecStart,
-                                   const QAngle& angAngles,
+    virtual bool TraceShape(const Vector* pVecStart,
+                                   const QAngle* pAngAngles,
                                    CEntityInstance* pIgnoreEntity,
                                    TraceOptions* pTraceOptions,
                                    TraceResult* pTraceResult) = 0;
 
-    virtual bool TraceEndShape(const Vector& vecStart,
-                                      const Vector& vecEnd,
+    virtual bool TraceEndShape(const Vector* pVecStart,
+                                      const Vector* pVecEnd,
                                       CEntityInstance* pIgnoreEntity,
                                       TraceOptions* pTraceOptions,
                                       TraceResult* pTraceResult) = 0;
 
-    virtual bool TraceHullShape(const Vector& vecStart,
-                                       const Vector& vecEnd,
-                                       const Vector& vecMins,
-                                       const Vector& vecMaxs,
+    virtual bool TraceHullShape(const Vector* pVecStart,
+                                       const Vector* pVecEnd,
+                                       const Vector* pVecMins,
+                                       const Vector* pVecMaxs,
                                        CEntityInstance* pIgnoreEntity,
                                        TraceOptions* pTraceOptions,
                                        TraceResult* pTraceResult) = 0;
 
-    virtual bool TraceShapeEx(const Vector& vecStart,
-                                     const Vector& vecEnd,
+    virtual bool TraceShapeEx(const Vector* pVecStart,
+                                     const Vector* pVecEnd,
                                      CTraceFilter* pTraceFilter,
                                      Ray_t* pRay,
                                      TraceResult* pTraceResult) = 0;
