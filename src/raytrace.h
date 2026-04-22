@@ -30,11 +30,20 @@ namespace RayTracePlugin::RayTrace
     class CRayTrace : public CRayTraceInterface {
     public:
         bool Initialize();
+        void DrawBeam(const Vector& vecStart, const Vector& vecEnd, const Color& colRender);
+
     public:
         bool TraceShape(const Vector* pVecStart, const QAngle* pAngAngles, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult) override;
         bool TraceEndShape(const Vector* pVecStart, const Vector* pVecEnd, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult) override;
         bool TraceHullShape(const Vector* pVecStart, const Vector* pVecEnd, const Vector* pVecMins, const Vector* pVecMaxs, CEntityInstance* pIgnoreEntity, TraceOptions* pTraceOptions, TraceResult* pTraceResult) override;
         bool TraceShapeEx(const Vector* pVecStart, const Vector* pVecEnd, CTraceFilter* pTraceFilter, Ray_t* pRay, TraceResult* pTraceResult) override;
+
+    public:
+        std::optional<TraceResult> TraceShapeInternal(const Vector& vecStart, const QAngle& angAngles, CEntityInstance* pIgnoreEntity = nullptr, const TraceOptions* pTraceOptions = nullptr);
+        std::optional<TraceResult> TraceEndShapeInternal(const Vector& vecStart, const Vector& vecEnd, CEntityInstance* pIgnoreEntity = nullptr, const TraceOptions* pTraceOptions = nullptr);
+        std::optional<TraceResult> TraceHullShapeInternal(const Vector& vecStart, const Vector& vecEnd, const Vector& vecMins, const Vector& vecMaxs, CEntityInstance* pIgnoreEntity = nullptr, const TraceOptions* pTraceOptions = nullptr);
+        std::optional<TraceResult> TraceShapeExInternal(const Vector& vecStart, const Vector& vecEnd, CTraceFilter& traceFilter, Ray_t ray);
+
     protected:
         DynLibUtils::CMemory m_pCNavPhysicsInterface_TraceShape;
     protected:

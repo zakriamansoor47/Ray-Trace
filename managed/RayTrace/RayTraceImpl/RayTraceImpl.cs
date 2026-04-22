@@ -170,7 +170,7 @@ public static class NativeBridge
 
     public static bool Initialize()
     {
-        Handle = (nint)Utilities.MetaFactory("CRayTraceInterface001")!;
+        Handle = (nint)Utilities.MetaFactory("CRayTraceInterface002")!;
 
         if (Handle == 0)
             return false;
