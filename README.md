@@ -180,8 +180,7 @@ public override void Load(bool hotReload)
 
 public void DoTrace(CCSPlayerController player)
 {
-    var rayTrace = RayTraceInterface.Get();
-    if (rayTrace == null)
+    if (player == null || !player.IsValid)
         return;
 
     var playerPawn = player.PlayerPawn.Value;
@@ -191,7 +190,7 @@ public void DoTrace(CCSPlayerController player)
     TraceByEyePosition(player, new TraceOptions(InteractionLayers.MASK_SHOT, InteractionLayers.MASK_SHOT), out var trace);
     if (trace.DidHit)
     {
-        player.PrintToChat($"{Localizer["Chat.Prefix"]} Hit at {trace.HitPoint} | {trace.SurfaceProps.Name.Value}");
+        player.PrintToChat($"[RayTrace] Hit at {trace.HitPoint} | {trace.SurfaceProps.Name.Value}");
     }
 }
 ```
