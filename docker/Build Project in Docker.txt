@@ -1,0 +1,18 @@
+
+Create new Container with name raytrace-dev:
+sudo docker run \
+    --name raytrace-dev \
+    -it \
+    -v ~/plugins/Ray-Trace:/app/source \
+    -v ~/plugins/cs2-sdk:/opt/sdk \
+    cmake-builder:latest
+
+Reopen old Container:
+sudo docker start -ai raytrace-dev
+
+Update code:
+cd /app/source
+git pull
+
+update sdk and build the project:
+./docker/setup-sdk.sh
