@@ -1,8 +1,17 @@
 services:
   builder:
-    image: cmake-builder
+    image: cmake-builder:latest
+    container_name: raytrace-dev
+
     build:
       context: ..
       dockerfile: docker/Dockerfile
+
+    stdin_open: true
+    tty: true
+
     volumes:
       - ..:/app/source
+      - ~/plugins/cs2-sdk:/opt/sdk
+
+    working_dir: /app/source

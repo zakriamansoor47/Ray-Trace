@@ -14,7 +14,6 @@ namespace RayTracePlugin::Listeners {
 
     class SourceHooks {
     public:
-        void Hook_GameFrame(bool simulating, bool bFirstTick, bool bLastTick);
         void Hook_StartupServer(const GameSessionConfiguration_t& config, ISource2WorldSession*, const char*);
         int Hook_LoadEventsFromFile(const char* filename, bool bSearchAll);
     };

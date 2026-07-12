@@ -17,7 +17,6 @@
 #include "craytraceinterface.h"
 #include "log.h"
 #include "raytrace.h"
-#include "tasks.h"
 
 #define VERSION_STRING "v1.0.14"
 #define BUILD_TIMESTAMP __DATE__ " " __TIME__
@@ -67,7 +66,6 @@ namespace RayTracePlugin
             return false;
 
         Log::Init();
-        Tasks::Init();
 
         auto gamedata_path = std::string(Paths::GetRootDirectory() + "/gamedata.json");
         shared::g_pGameConfig = new CGameConfig(gamedata_path);
@@ -99,7 +97,6 @@ namespace RayTracePlugin
     bool IPlugin::Unload(char* error, size_t maxlen)
     {
         Listeners::DestructListeners();
-        Tasks::Shutdown();
 
         FP_INFO("<<< Unload() success! >>>");
 
